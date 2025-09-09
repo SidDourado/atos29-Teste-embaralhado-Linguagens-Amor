@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste 5 Linguagens do Amor | Atos 29</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1f2937, #374151);
+        }
+        .card {
+            background-color: #1f2937;
+            border: 1px solid #4b5563;
+            transition: all 0.3s ease;
+        }
+        .option-btn {
+            background-color: #374151;
+            border: 1px solid #4b5563;
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .option-btn:hover {
+            background-color: #4f46e5;
+            transform: translateY(-2px);
+            border-color: #6366f1;
+        }
+        .result-card {
+            display: none;
+        }
+        .progress-bar-inner {
+            transition: width 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body class="gradient-bg text-gray-200 min-h-screen flex items-center justify-center p-4">
+
+    <main class="w-full max-w-2xl mx-auto">
+        <!-- Tela Inicial -->
+        <div id="start-screen" class="card p-8 rounded-2xl shadow-2xl text-center">
+            <h1 class="text-3xl md:text-4xl font-bold text-white mb-2">Atos 29</h1>
+            <p class="text-indigo-400 font-semibold mb-6">Apresenta:</p>
+            <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Qual é a sua Linguagem de Amor?</h2>
+            <p class="text-gray-400 mb-8">Descubra como você mais se sente amado(a) com este teste rápido de 20 perguntas, inspirado no livro de Gary Chapman.</p>
+            <button onclick="startQuiz()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-10 rounded-lg shadow-lg transition-transform transform hover:scale-105">
+                Começar o Teste!
+            </button>
+        </div>
+
+        <!-- Tela do Quiz -->
+        <div id="quiz-screen" class="hidden">
+            <div class="card p-6 md:p-8 rounded-2xl shadow-2xl">
+                <!-- Progresso -->
+                <div class="mb-6">
+                    <p class="text-sm font-semibold text-indigo-400 mb-2" id="question-counter">PERGUNTA 1 / 20</p>
+                    <div class="w-full bg-gray-700 rounded-full h-2.5">
+                        <div id="progress-bar" class="bg-indigo-600 h-2.5 rounded-full" style="width: 5%"></div>
+                    </div>
+                </div>
+                
+                <!-- Pergunta -->
+                <h2 class="text-xl md:text-2xl font-semibold text-white mb-6" id="question-text"></h2>
+                
+                <!-- Opções -->
+                <div id="options-container" class="space-y-4">
+                    <!-- Opções serão inseridas aqui pelo JS -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tela de Resultados -->
+        <div id="result-screen" class="hidden">
+            <div class="card p-8 rounded-2xl shadow-2xl text-center">
+                <h2 class="text-2xl md:text-3xl font-bold text-white mb-4">Sua Linguagem de Amor Primária é:</h2>
+                
+                <!-- Resultado: Palavras de Afirmação -->
+                <div id="palavras" class="result-card">
+                    <h3 class="text-3xl md:text-4xl font-bold text-indigo-400 mb-4">Palavras de Afirmação</h3>
+                    <p class="text-gray-300 mb-6">Você se sente amado(a) quando ouve palavras de carinho, elogios e incentivo. Frases como "estou orgulhoso de você" e "eu te amo" enchem seu "tanque de amor". Para você, palavras têm um poder enorme.</p>
+                    <p class="text-gray-400 text-sm italic">"O coração do justo medita o que há de responder, mas a boca dos ímpios derrama coisas más." - Provérbios 15:28</p>
+                </div>
+
+                <!-- Resultado: Tempo de Qualidade -->
+                <div id="tempo" class="result-card">
+                    <h3 class="text-3xl md:text-4xl font-bold text-indigo-400 mb-4">Tempo de Qualidade</h3>
+                    <p class="text-gray-300 mb-6">Ter a atenção total das pessoas que você ama é o mais importante. Um bom papo, um rolê juntos, criar memórias... isso sim é amor! Você se sente valorizado(a) quando alguém dedica tempo precioso para estar com você.</p>
+                    <p class="text-gray-400 text-sm italic">"Não deixemos de congregar-nos, como é costume de alguns; antes, façamos admoestações e tanto mais quanto vedes que o Dia se aproxima." - Hebreus 10:25</p>
+                </div>
+
+                <!-- Resultado: Receber Presentes -->
+                <div id="presentes" class="result-card">
+                    <h3 class="text-3xl md:text-4xl font-bold text-indigo-400 mb-4">Receber Presentes</h3>
+                    <p class="text-gray-300 mb-6">Você vê presentes como símbolos visíveis do amor. Não pelo preço, mas pelo carinho por trás do gesto. Uma simples lembrança mostra que a pessoa pensou em você e se importou, sendo uma prova física de que você é amado(a).</p>
+                     <p class="text-gray-400 text-sm italic">"Porque Deus amou o mundo de tal maneira que deu o seu Filho unigênito, para que todo aquele que nele crê não pereça, mas tenha a vida eterna." - João 3:16</p>
+                </div>
+
+                <!-- Resultado: Atos de Serviço -->
+                <div id="servico" class="result-card">
+                    <h3 class="text-3xl md:text-4xl font-bold text-indigo-400 mb-4">Atos de Serviço</h3>
+                    <p class="text-gray-300 mb-6">Ações falam mais alto que palavras para você. Quando alguém faz algo prático para te ajudar ou aliviar suas responsabilidades, você se sente profundamente amado(a). Para você, amor é algo que se demonstra com atitudes.</p>
+                    <p class="text-gray-400 text-sm italic">"Porque o Filho do homem também não veio para ser servido, mas para servir e dar a sua vida em resgate de muitos." - Marcos 10:45</p>
+                </div>
+
+                <!-- Resultado: Toque Físico -->
+                <div id="toque" class="result-card">
+                    <h3 class="text-3xl md:text-4xl font-bold text-indigo-400 mb-4">Toque Físico</h3>
+                    <p class="text-gray-300 mb-6">O contato físico é sua forma principal de se conectar. Um abraço, um cafuné, um tapinha nas costas... tudo isso te comunica amor e segurança. A proximidade física é essencial para você se sentir cuidado(a) e valorizado(a).</p>
+                    <p class="text-gray-400 text-sm italic">"E, tomando-as nos seus braços, e impondo-lhes as mãos, as abençoava." - Marcos 10:16</p>
+                </div>
+
+                <button onclick="restartQuiz()" class="mt-8 bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-8 rounded-lg transition-transform transform hover:scale-105">
+                    Refazer o Teste
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // --- BANCO DE DADOS DAS PERGUNTAS ---
+        const questions = [
+            {
+                question: "Depois de uma semana de provas, o que te faria sentir melhor?",
+                answers: [
+                    { text: "Ouvir seus pais dizendo que estão orgulhosos do seu esforço.", language: "palavras" },
+                    { text: "Passar um tempo de qualidade com seus amigos, sem distrações.", language: "tempo" },
+                    { text: "Ganhar um pequeno presente que você estava querendo.", language: "presentes" },
+                    { text: "Seus pais prepararem sua comida favorita para o jantar.", language: "servico" },
+                    { text: "Receber um abraço apertado e um cafuné.", language: "toque" }
+                ]
+            },
+            {
+                question: "No seu aniversário, qual destas opções te faria sentir mais especial?",
+                answers: [
+                    { text: "Receber várias mensagens de amigos dizendo o quanto você é importante.", language: "palavras" },
+                    { text: "Seus amigos planejarem um dia inteiro de atividades só com você.", language: "tempo" },
+                    { text: "Ganhar aquele presente que você tanto sonhava.", language: "presentes" },
+                    { text: "Um amigo se oferecer para te ajudar com uma tarefa que você odeia fazer.", language: "servico" },
+                    { text: "Receber muitos abraços das pessoas que você ama.", language: "toque" }
+                ]
+            },
+            {
+                question: "Você está se sentindo para baixo. O que te ajudaria mais?",
+                answers: [
+                    { text: "Um amigo te enviar uma mensagem com uma passagem bíblica encorajadora.", language: "palavras" },
+                    { text: "Alguém simplesmente sentar ao seu lado em silêncio, te fazendo companhia.", language: "tempo" },
+                    { text: "Receber uma pequena lembrança, como um chocolate.", language: "presentes" },
+                    { text: "Um amigo fazer um favor para você, como pegar um lanche na igreja.", language: "servico" },
+                    { text: "Um amigo colocar a mão no seu ombro e dizer que está ali para o que precisar.", language: "toque" }
+                ]
+            },
+            {
+                question: "O que te faria se sentir mais conectado(a) aos seus pais?",
+                answers: [
+                    { text: "Eles te dizerem com frequência: 'Nós te amamos'.", language: "palavras" },
+                    { text: "Eles reservarem um tempo toda semana para fazer algo que você gosta.", language: "tempo" },
+                    { text: "Eles te darem um presente surpresa depois de uma conquista.", language: "presentes" },
+                    { text: "Eles te levarem para algum lugar para você não ir sozinho(a).", language: "servico" },
+                    { text: "Um abraço de 'bom dia' e 'boa noite' todos os dias.", language: "toque" }
+                ]
+            },
+            {
+                question: "No grupo Atos 29, o que te faz sentir mais parte da galera?",
+                answers: [
+                    { text: "Quando alguém reconhece e elogia uma ideia que você deu.", language: "palavras" },
+                    { text: "Ter conversas profundas e divertidas com o pessoal depois do culto.", language: "tempo" },
+                    { text: "Trocar pulseirinhas da amizade ou outros pequenos símbolos.", language: "presentes" },
+                    { text: "Quando alguém te ajuda a montar os equipamentos de som.", language: "servico" },
+                    { text: "Aquele abraço em grupo no final de cada encontro.", language: "toque" }
+                ]
+            },
+            {
+                question: "O que significa 'eu te amo' mais alto para você?",
+                answers: [
+                    { text: "As palavras 'estou orgulhoso(a) de você'.", language: "palavras" },
+                    { text: "Alguém desligar o celular para te dar total atenção.", language: "tempo" },
+                    { text: "Um presente escolhido com cuidado, pensando em você.", language: "presentes" },
+                    { text: "Alguém dizer: 'Deixa que eu faço isso por você'.", language: "servico" },
+                    { text: "Um abraço longo e sincero.", language: "toque" }
+                ]
+            },
+            {
+                question: "Você tirou uma nota baixa. O que te consolaria?",
+                answers: [
+                    { text: "Alguém dizer: 'Você é inteligente, vai conseguir recuperar'.", language: "palavras" },
+                    { text: "Um amigo se oferecer para estudar com você.", language: "tempo" },
+                    { text: "Ganhar seu doce favorito para te animar.", language: "presentes" },
+                    { text: "Seus pais te liberarem das tarefas de casa para focar nos estudos.", language: "servico" },
+                    { text: "Um tapinha nas costas e um sorriso encorajador.", language: "toque" }
+                ]
+            },
+            {
+                question: "O que te faz sentir mais amado(a) por Deus?",
+                answers: [
+                    { text: "Ler na Bíblia promessas e palavras de afirmação.", language: "palavras" },
+                    { text: "Passar um tempo a sós em oração e sentir Sua presença.", language: "tempo" },
+                    { text: "Pensar em todos os 'presentes' que Ele te dá: a vida, a família, a salvação.", language: "presentes" },
+                    { text: "Perceber as vezes em que Ele 'agiu' na sua vida, te livrando de algo.", language: "servico" },
+                    { text: "Sentir o 'abraço' do Espírito Santo durante um louvor.", language: "toque" }
+                ]
+            },
+            {
+                question: "Qual o rolê ideal com os amigos?",
+                answers: [
+                    { text: "Um momento de conversa onde todos compartilham e elogiam uns aos outros.", language: "palavras" },
+                    { text: "Um acampadentro na igreja, com muitas horas para conversar e se divertir.", language: "tempo" },
+                    { text: "Fazer um amigo secreto fora de época, só pela diversão de presentear.", language: "presentes" },
+                    { text: "Ajudar um amigo a organizar o quarto ou em alguma tarefa.", language: "servico" },
+                    { text: "Uma noite de filmes com todo mundo junto no mesmo sofá.", language: "toque" }
+                ]
+            },
+             {
+                question: "Você está aprendendo a tocar um instrumento para o louvor. O que mais te motiva?",
+                answers: [
+                    { text: "O líder do louvor dizer que você está evoluindo muito bem.", language: "palavras" },
+                    { text: "Ter um tempo exclusivo com um músico mais experiente para te ensinar.", language: "tempo" },
+                    { text: "Ganhar uma palheta nova ou um acessório para o seu instrumento.", language: "presentes" },
+                    { text: "Alguém te ajudar a carregar e montar seu instrumento.", language: "servico" },
+                    { text: "Um 'toca aqui' animado dos seus amigos quando você chega para o ensaio.", language: "toque" }
+                ]
+            },
+            {
+                question: "Num trabalho em grupo da escola, o que te deixaria mais feliz?",
+                answers: [
+                    { text: "Os colegas elogiarem sua parte da pesquisa.", language: "palavras" },
+                    { text: "O grupo decidir passar uma tarde juntos focados no trabalho.", language: "tempo" },
+                    { text: "Alguém trazer lanche para todos como um agrado.", language: "presentes" },
+                    { text: "Um colega se oferecer para fazer a parte mais chata do trabalho.", language: "servico" },
+                    { text: "Um 'high-five' de comemoração quando terminam o projeto.", language: "toque" }
+                ]
+            },
+            {
+                question: "Seus pais querem te recompensar por suas boas notas. O que você preferiria?",
+                answers: [
+                    { text: "Que eles escrevessem um cartão dizendo o quanto estão orgulhosos.", language: "palavras" },
+                    { text: "Um passeio especial em família, escolhido por você.", language: "tempo" },
+                    { text: "O tênis novo que você estava querendo há meses.", language: "presentes" },
+                    { text: "Uma semana sem precisar lavar a louça.", language: "servico" },
+                    { text: "Um abraço bem forte e um 'parabéns' sincero.", language: "toque" }
+                ]
+            },
+            {
+                question: "O que te faz sentir mais seguro(a) em uma amizade?",
+                answers: [
+                    { text: "Seu amigo sempre te defender e falar bem de você para os outros.", language: "palavras" },
+                    { text: "Seu amigo sempre ter tempo para te ouvir, não importa o quão ocupado esteja.", language: "tempo" },
+                    { text: "Receber um presente que mostra que seu amigo realmente te conhece.", language: "presentes" },
+                    { text: "Saber que você pode contar com a ajuda do seu amigo para qualquer coisa.", language: "servico" },
+                    { text: "O conforto de um abraço quando vocês se encontram.", language: "toque" }
+                ]
+            },
+            {
+                question: "Como você percebe o cuidado de Deus no dia a dia?",
+                answers: [
+                    { text: "Através de versículos que 'saltam' aos seus olhos durante a leitura.", language: "palavras" },
+                    { text: "Nos momentos de paz e tranquilidade quando você consegue orar.", language: "tempo" },
+                    { text: "Nas pequenas 'bênçãos' materiais que aparecem quando você precisa.", language: "presentes" },
+                    { text: "Vendo como Ele te ajuda a resolver problemas práticos e te dá força.", language: "servico" },
+                    { text: "Sentindo uma paz que te conforta, como um abraço na alma.", language: "toque" }
+                ]
+            },
+            {
+                question: "O que seria um pedido de desculpas mais sincero para você?",
+                answers: [
+                    { text: "Ouvir 'eu errei, me perdoa' e a pessoa reconhecer o erro.", language: "palavras" },
+                    { text: "A pessoa te chamar para conversar e se dedicar a entender como você se sentiu.", language: "tempo" },
+                    { text: "A pessoa te dar um presente como forma de mostrar que se arrependeu.", language: "presentes" },
+                    { text: "A pessoa se oferecer para consertar o que fez de errado.", language: "servico" },
+                    { text: "Um abraço que diz 'vamos ficar bem'.", language: "toque" }
+                ]
+            },
+             {
+                question: "Você está sobrecarregado(a) com as atividades. O que te aliviaria mais?",
+                answers: [
+                    { text: "Um líder te dizer: 'Eu vejo seu esforço e sou grato por tudo'.", language: "palavras" },
+                    { text: "Um amigo se oferecer para ficar com você, mesmo que em silêncio.", language: "tempo" },
+                    { text: "Alguém te trazer seu lanche preferido para te dar energia.", language: "presentes" },
+                    { text: "Um amigo pegar uma das suas tarefas para fazer por você.", language: "servico" },
+                    { text: "Um amigo fazer uma massagem rápida nos seus ombros para aliviar a tensão.", language: "toque" }
+                ]
+            },
+            {
+                question: "O que te faz ter certeza de que um amigo é verdadeiro?",
+                answers: [
+                    { text: "Ele sempre te elogia e te encoraja.", language: "palavras" },
+                    { text: "Ele faz questão de passar tempo com você.", language: "tempo" },
+                    { text: "Ele se lembra de datas importantes e te surpreende com lembranças.", language: "presentes" },
+                    { text: "Ele está sempre disposto a te ajudar, não importa o problema.", language: "servico" },
+                    { text: "Ele não hesita em te dar um abraço de apoio quando você precisa.", language: "toque" }
+                ]
+            },
+            {
+                question: "Seu amigo está se mudando para longe. Qual despedida seria mais marcante?",
+                answers: [
+                    { text: "Uma longa carta ou mensagem, relembrando os bons momentos.", language: "palavras" },
+                    { text: "Passar o último dia inteiro juntos, fazendo suas coisas favoritas.", language: "tempo" },
+                    { text: "Trocar um presente significativo para um lembrar do outro.", language: "presentes" },
+                    { text: "Ajudá-lo a encaixotar e organizar a mudança o dia todo.", language: "servico" },
+                    { text: "Um abraço muito, muito longo e apertado no aeroporto.", language: "toque" }
+                ]
+            },
+            {
+                question: "Você acabou de liderar uma gincana no Atos 29 e foi um sucesso. O que é mais gratificante?",
+                answers: [
+                    { text: "O pastor te parabenizar na frente de todos pelo excelente trabalho.", language: "palavras" },
+                    { text: "Seus amigos te convidarem para sair para comemorar depois.", language: "tempo" },
+                    { text: "O grupo de adolescentes te dar uma camiseta personalizada de 'líder'.", language: "presentes" },
+                    { text: "Ver que vários amigos ficaram até o final para te ajudar a limpar tudo.", language: "servico" },
+                    { text: "Receber vários tapinhas nas costas e cumprimentos de 'parabéns'.", language: "toque" }
+                ]
+            },
+            {
+                question: "Como você prefere comemorar uma conquista pessoal?",
+                answers: [
+                    { text: "Contar para as pessoas que ama e ouvir o que elas têm a dizer.", language: "palavras" },
+                    { text: "Sair para um lugar legal com as pessoas mais próximas.", language: "tempo" },
+                    { text: "Se dar um presente, algo que você queria há um tempo.", language: "presentes" },
+                    { text: "Tirar o dia de folga das suas obrigações como recompensa.", language: "servico" },
+                    { text: "Comemorar com abraços e festa com as pessoas que ama.", language: "toque" }
+                ]
+            }
+        ];
+
+
+        // --- LÓGICA DO QUIZ ---
+        let currentQuestionIndex = 0;
+        let scores = {
+            palavras: 0,
+            tempo: 0,
+            presentes: 0,
+            servico: 0,
+            toque: 0
+        };
+
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultScreen = document.getElementById('result-screen');
+        
+        const questionText = document.getElementById('question-text');
+        const optionsContainer = document.getElementById('options-container');
+        const questionCounter = document.getElementById('question-counter');
+        const progressBar = document.getElementById('progress-bar');
+
+        function startQuiz() {
+            startScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            showQuestion();
+        }
+
+        function showQuestion() {
+            // Limpa opções anteriores
+            optionsContainer.innerHTML = '';
+            
+            // Pega a pergunta atual
+            let currentQuestion = questions[currentQuestionIndex];
+            questionText.innerText = currentQuestion.question;
+
+            // Atualiza o contador e a barra de progresso
+            questionCounter.innerText = `PERGUNTA ${currentQuestionIndex + 1} / ${questions.length}`;
+            progressBar.style.width = `${((currentQuestionIndex + 1) / questions.length) * 100}%`;
+
+            // Embaralha as respostas para que não sigam um padrão
+            let shuffledAnswers = [...currentQuestion.answers];
+            for (let i = shuffledAnswers.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledAnswers[i], shuffledAnswers[j]] = [shuffledAnswers[j], shuffledAnswers[i]];
+            }
+
+            // Cria os botões de opção com as respostas embaralhadas
+            shuffledAnswers.forEach(answer => {
+                const button = document.createElement('button');
+                button.innerText = answer.text;
+                button.classList.add('w-full', 'p-4', 'rounded-lg', 'text-left', 'option-btn');
+                button.onclick = () => selectAnswer(answer.language);
+                optionsContainer.appendChild(button);
+            });
+        }
+
+        function selectAnswer(language) {
+            scores[language]++;
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+
+        function showResults() {
+            quizScreen.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            
+            // Oculta todos os cards de resultado
+            document.querySelectorAll('.result-card').forEach(card => card.style.display = 'none');
+
+            // Encontra a linguagem com maior pontuação
+            let maxScore = 0;
+            let primaryLanguage = '';
+            for (const lang in scores) {
+                if (scores[lang] > maxScore) {
+                    maxScore = scores[lang];
+                    primaryLanguage = lang;
+                }
+            }
+            
+            // Mostra o card de resultado correspondente
+            const resultCard = document.getElementById(primaryLanguage);
+            if(resultCard) {
+                resultCard.style.display = 'block';
+            }
+        }
+        
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            scores = { palavras: 0, tempo: 0, presentes: 0, servico: 0, toque: 0 };
+            
+            resultScreen.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+        }
+
+    </script>
+</body>
+</html>
+
